@@ -101,6 +101,14 @@
             margin-top: 0;
         }
 
+        .highlight {
+            background: #F0FAF6;
+            border-left: 4px solid #006B7D;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
         .warning {
             background: #FFF5F0;
             border-left: 4px solid #E76F51;
@@ -156,75 +164,87 @@
 <body>
     <header>
         <h1>LLYLI Privacy Policy</h1>
-        <p>Last Updated: February 11, 2026</p>
+        <p>Last Updated: March 30, 2026</p>
     </header>
 
     <main>
+        <h2>The Short Version</h2>
+        <div class="highlight">
+            <strong>No ads. No tracking. No selling your data.</strong> We collect only what's needed to make LLYLI work. Your words belong to you. You can delete everything at any time.
+        </div>
+
         <h2>Introduction</h2>
-        <p>LLYLI ("Learn the Language You Live in") is a language learning application that helps users learn vocabulary through spaced repetition. This Privacy Policy explains how we collect, use, store, and protect your personal information.</p>
+        <p>LLYLI ("Learn the Language You Live In") helps you learn the language of the country you live in. You capture words from daily life, and the app turns them into lasting vocabulary with spaced repetition and real sentence context.</p>
+        <p>This Privacy Policy explains what we collect, why, and how we protect it. We keep it straightforward.</p>
 
         <h2>Information We Collect</h2>
 
         <h3>1. Account Information</h3>
         <ul>
-            <li><strong>Email address</strong> &mdash; Used for account creation and authentication</li>
-            <li><strong>Apple ID</strong> &mdash; When using Sign in with Apple (tokenized identifier only)</li>
-            <li><strong>User ID</strong> &mdash; Unique identifier for your account</li>
+            <li><strong>Email address</strong> -- for account creation and authentication</li>
+            <li><strong>Apple ID</strong> -- when using Sign in with Apple (tokenized identifier only)</li>
+            <li><strong>User ID</strong> -- a unique identifier for your account</li>
         </ul>
 
-        <h3>2. User-Generated Content</h3>
+        <h3>2. Your Vocabulary</h3>
         <ul>
-            <li><strong>Vocabulary words</strong> &mdash; Words you capture and their translations</li>
-            <li><strong>Example sentences</strong> &mdash; Sentences generated or provided for learning context</li>
-            <li><strong>Review history</strong> &mdash; Your answers and progress on vocabulary reviews</li>
-            <li><strong>Learning preferences</strong> &mdash; Native and target language selections</li>
+            <li><strong>Captured words</strong> -- words you add and their translations</li>
+            <li><strong>Practice sentences</strong> -- sentences generated for learning context</li>
+            <li><strong>Review history</strong> -- your answers and progress on vocabulary reviews</li>
+            <li><strong>Language preferences</strong> -- your native and target language selections</li>
         </ul>
 
         <h3>3. Usage Data</h3>
         <ul>
-            <li><strong>Session data</strong> &mdash; Review session timestamps and duration</li>
-            <li><strong>Progress metrics</strong> &mdash; Mastery levels, consecutive correct answers</li>
-            <li><strong>FSRS parameters</strong> &mdash; Spaced repetition algorithm data (difficulty, stability)</li>
+            <li><strong>Session data</strong> -- review session timestamps and duration</li>
+            <li><strong>Progress metrics</strong> -- mastery levels, streaks, consecutive correct answers</li>
+            <li><strong>Learning algorithm data</strong> -- how well you know each word and when to review it next</li>
+            <li><strong>Subscription events</strong> -- if you subscribe, we record subscription-related events (e.g. trial start, purchase, expiry) for service management</li>
+        </ul>
+
+        <h3>4. Notification Preferences</h3>
+        <ul>
+            <li><strong>Notification settings</strong> -- if you enable review reminders, we store your preference locally on your device</li>
         </ul>
 
         <h2>How We Use Your Information</h2>
 
-        <h3>Primary Use &mdash; App Functionality</h3>
+        <h3>Making the App Work</h3>
         <ul>
-            <li><strong>Spaced Repetition Learning</strong> &mdash; FSRS algorithm schedules reviews based on your performance</li>
-            <li><strong>Multi-Device Sync</strong> &mdash; Your vocabulary and progress sync across your devices</li>
-            <li><strong>Personalized Experience</strong> &mdash; Content adapts to your mastery level</li>
+            <li><strong>Spaced repetition</strong> -- the app schedules reviews based on how well you know each word, so you study less and remember more</li>
+            <li><strong>Multi-device sync</strong> -- your vocabulary and progress sync across your devices</li>
+            <li><strong>Personalized exercises</strong> -- content adapts to your mastery level. Easy words get harder sentences. Difficult words come back sooner.</li>
         </ul>
 
-        <h3>Translation &amp; Content Generation</h3>
+        <h3>Translation and Content</h3>
         <ul>
-            <li><strong>OpenAI API</strong> &mdash; Word translations, example sentences, and multiple-choice distractors are generated via OpenAI's API through our secure Edge Functions</li>
-            <li><strong>Language Processing</strong> &mdash; AI determines word categories and difficulty levels</li>
+            <li><strong>OpenAI API</strong> -- word translations, example sentences, and quiz options are generated via OpenAI's API through our secure backend. Only individual words and language pairs are sent. No personal data.</li>
+            <li><strong>Language processing</strong> -- AI determines word categories and difficulty levels</li>
         </ul>
 
-        <h3>Analytics (Optional)</h3>
+        <h3>Analytics (Minimal)</h3>
         <ul>
-            <li><strong>Usage Patterns</strong> &mdash; Anonymous analytics to improve app experience</li>
-            <li><strong>Crash Reports</strong> &mdash; Error logs to fix bugs (no personal data)</li>
+            <li><strong>Usage patterns</strong> -- anonymous, aggregated data to improve the app</li>
+            <li><strong>Error logs</strong> -- crash reports to fix bugs (no personal data included)</li>
         </ul>
 
-        <h2>Data Storage &amp; Security</h2>
+        <h2>Data Storage and Security</h2>
 
         <div class="card">
-            <h3>Supabase Backend</h3>
+            <h3>Cloud (Supabase)</h3>
             <ul>
-                <li>All user data is stored securely in Supabase (PostgreSQL database)</li>
-                <li>Data is encrypted in transit (HTTPS/TLS)</li>
-                <li>Data is encrypted at rest</li>
-                <li>Database access restricted via Row-Level Security policies</li>
+                <li>All user data stored securely in Supabase (PostgreSQL)</li>
+                <li>Encrypted in transit (HTTPS/TLS) and at rest</li>
+                <li>Database access restricted via Row-Level Security -- you can only see your own data</li>
             </ul>
         </div>
 
         <div class="card">
-            <h3>Local Device Storage</h3>
+            <h3>Your Device</h3>
             <ul>
-                <li>SwiftData stores cached vocabulary and sentences locally for offline use</li>
-                <li>Local data is protected by iOS device encryption</li>
+                <li>Vocabulary and sentences are cached locally for offline use</li>
+                <li>Protected by iOS device encryption</li>
+                <li>Review sessions work 100% offline -- no data leaves your phone</li>
                 <li>Local data is deleted when you delete the app</li>
             </ul>
         </div>
@@ -242,18 +262,18 @@
             <tbody>
                 <tr>
                     <td><strong>Supabase</strong></td>
-                    <td>Authentication &amp; data storage</td>
+                    <td>Authentication and data storage</td>
                     <td>Email, user ID, vocabulary data</td>
                 </tr>
                 <tr>
                     <td><strong>OpenAI</strong></td>
-                    <td>Translation &amp; sentence generation</td>
-                    <td>Individual words &amp; language pairs only (no personal data)</td>
+                    <td>Translation and sentence generation</td>
+                    <td>Individual words and language pairs only (no personal data)</td>
                 </tr>
                 <tr>
                     <td><strong>Apple</strong></td>
-                    <td>Sign in with Apple</td>
-                    <td>Tokenized user identifier only</td>
+                    <td>Sign in with Apple, subscriptions</td>
+                    <td>Tokenized user identifier, subscription status</td>
                 </tr>
             </tbody>
         </table>
@@ -266,67 +286,69 @@
 
         <h2>Your Rights</h2>
 
-        <h3>Access Your Data</h3>
-        <p>You can view all your vocabulary and progress in the app's Notebook section.</p>
+        <p>Your data is yours. Here's what you can do with it.</p>
+
+        <h3>See Your Data</h3>
+        <p>Everything you've captured and learned is visible in the app's Notebook and Progress tabs.</p>
 
         <h3>Delete Your Data</h3>
         <p>You can delete your account at any time:</p>
         <ol>
-            <li>Open the app</li>
-            <li>Go to Settings tab</li>
-            <li>Tap "Delete Account"</li>
+            <li>Tap the info button (top-right on any tab)</li>
+            <li>Scroll to "Delete Account"</li>
             <li>Confirm deletion</li>
         </ol>
 
         <div class="warning">
-            <strong>This action is permanent and cannot be undone.</strong> All your vocabulary, review history, and progress will be permanently deleted from our servers and your device.
+            <strong>This is permanent and cannot be undone.</strong> All your vocabulary, review history, and progress will be permanently deleted from our servers and your device within 30 days.
         </div>
 
         <h3>Export Your Data</h3>
-        <p>Contact us via <a href="https://wa.me/351931959625">WhatsApp</a> to request a copy of your data in JSON format.</p>
+        <p>Contact us via <a href="https://wa.me/351931959625">WhatsApp</a> or <a href="mailto:llyli.app@icloud.com">email</a> to request a copy of your data in JSON format.</p>
 
-        <h2>Data Retention</h2>
-        <ul>
-            <li><strong>Active Accounts</strong> &mdash; Data retained while account is active</li>
-            <li><strong>Deleted Accounts</strong> &mdash; All data permanently deleted within 30 days</li>
-            <li><strong>Inactive Accounts</strong> &mdash; Accounts inactive for 2+ years may be archived</li>
-        </ul>
-
-        <h2>GDPR Compliance (EU Users)</h2>
+        <h3>EU Users (GDPR)</h3>
         <p>If you are in the European Union, you have additional rights under GDPR:</p>
         <ul>
-            <li><strong>Right to Access</strong> &mdash; Request a copy of your data</li>
-            <li><strong>Right to Rectification</strong> &mdash; Correct inaccurate data</li>
-            <li><strong>Right to Erasure</strong> &mdash; Delete your data (via in-app deletion)</li>
-            <li><strong>Right to Data Portability</strong> &mdash; Export your data in machine-readable format</li>
-            <li><strong>Right to Object</strong> &mdash; Object to data processing</li>
+            <li><strong>Right to Access</strong> -- request a copy of your data</li>
+            <li><strong>Right to Rectification</strong> -- correct inaccurate data</li>
+            <li><strong>Right to Erasure</strong> -- delete your data (via in-app deletion)</li>
+            <li><strong>Right to Data Portability</strong> -- export your data in machine-readable format</li>
+            <li><strong>Right to Object</strong> -- object to data processing</li>
         </ul>
-        <p>To exercise these rights, contact us via <a href="https://wa.me/351931959625">WhatsApp</a>.</p>
-
-        <h2>Children's Privacy</h2>
-        <p>LLYLI is not directed to children under 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, contact us immediately via <a href="https://wa.me/351931959625">WhatsApp</a>.</p>
-
-        <h2>Changes to This Policy</h2>
-        <p>We may update this Privacy Policy from time to time. Changes will be posted in the app and on this page. Your continued use of the app after changes constitutes acceptance.</p>
+        <p>To exercise these rights, contact us via <a href="https://wa.me/351931959625">WhatsApp</a> or <a href="mailto:llyli.app@icloud.com">email</a>.</p>
 
         <h2>Legal Basis for Processing (GDPR)</h2>
         <p>We process your data based on:</p>
         <ul>
-            <li><strong>Contract Performance</strong> &mdash; Providing the language learning service</li>
-            <li><strong>Legitimate Interest</strong> &mdash; Improving app functionality and user experience</li>
-            <li><strong>Consent</strong> &mdash; Analytics and optional features (you can opt out)</li>
+            <li><strong>Contract Performance</strong> -- providing the language learning service you signed up for</li>
+            <li><strong>Legitimate Interest</strong> -- improving app functionality and fixing bugs</li>
+            <li><strong>Consent</strong> -- optional features like notifications (you can opt out anytime)</li>
         </ul>
 
-        <h2>Contact Us</h2>
+        <h2>Data Retention</h2>
+        <ul>
+            <li><strong>Active accounts</strong> -- data retained while your account is active</li>
+            <li><strong>Deleted accounts</strong> -- all data permanently deleted within 30 days</li>
+            <li><strong>Inactive accounts</strong> -- accounts inactive for 2+ years may be archived</li>
+        </ul>
+
+        <h2>Children's Privacy</h2>
+        <p>LLYLI is not directed to children under 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, contact us immediately.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>We may update this Privacy Policy from time to time. Changes will be posted on this page. Your continued use of the app after changes constitutes acceptance.</p>
+
+        <h2>Contact</h2>
         <p>For questions about this Privacy Policy or your data:</p>
         <ul>
             <li><strong>WhatsApp:</strong> <a href="https://wa.me/351931959625">Chat with us</a></li>
+            <li><strong>Email:</strong> <a href="mailto:llyli.app@icloud.com">llyli.app@icloud.com</a></li>
         </ul>
     </main>
 
     <footer>
         <p><strong>By using LLYLI, you agree to this Privacy Policy.</strong></p>
-        <p style="margin-top: 0.5rem;">&copy; 2026 LLYLI &mdash; Learn the Language You Live In</p>
+        <p style="margin-top: 0.5rem;">&copy; 2026 LLYLI. Learn the Language You Live In.</p>
     </footer>
 </body>
 </html>
