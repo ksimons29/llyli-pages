@@ -1,0 +1,28 @@
+name: Supabase keep-alive
+
+# The LLYLI backend runs on the Supabase free tier, which pauses projects
+# after ~7 days without database activity. This ping performs a real
+# (RLS-permitted, anon-role) SELECT twice a week so the project stays active.
+# The anon key is public by design -- it ships inside the iOS app binary.
+
+on:
+  schedule:
+    - cron: "0 6 * * 1,4" # Mondays and Thursdays 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query feature_flags (keeps project active)
+        run: |
+          ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJseW1wemVqd2JlemphanBldmRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1NTU4NzksImV4cCI6MjA4NDEzMTg3OX0.xfvBUDdxwhTvZuISjjyCde04ASHqeGtlRFsZB57tvNA"
+          HTTP=$(curl -s -o /tmp/body -w "%{http_code}" \
+            -H "apikey: ${ANON_KEY}" \
+            -H "Authorization: Bearer ${ANON_KEY}" \
+            "https://blympzejwbezjajpevdc.supabase.co/rest/v1/feature_flags?select=key&limit=1")
+          echo "HTTP ${HTTP}: $(cat /tmp/body)"
+          if [ "${HTTP}" != "200" ]; then
+            echo "::error::Supabase keep-alive failed (HTTP ${HTTP}) -- project may be paused!"
+            exit 1
+          fi
