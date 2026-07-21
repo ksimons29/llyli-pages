@@ -28,7 +28,12 @@ on:
     # 19:43 UTC daily -- ~12h offset from the primary, and off the hour because
     # GitHub queues scheduled jobs at :00 and drops them under load.
     - cron: "43 19 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      force_heartbeat:
+        description: "Run the heartbeat commit even if today isn't Monday (verifies push perms)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -70,10 +75,12 @@ jobs:
           echo "Keep-alive OK: ${#QUERIES[@]} database queries served."
 
       - name: Weekly heartbeat commit (keeps GitHub from disabling this cron)
+        env:
+          FORCE: ${{ inputs.force_heartbeat }}
         run: |
           # Only on Mondays -- one commit a week is ample to reset the 60-day
           # inactivity clock without flooding the history.
-          if [ "$(date -u +%u)" != "1" ]; then
+          if [ "$(date -u +%u)" != "1" ] && [ "${FORCE}" != "true" ]; then
             echo "Not Monday (UTC day $(date -u +%u)) -- skipping heartbeat commit."
             exit 0
           fi
