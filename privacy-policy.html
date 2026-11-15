@@ -191,6 +191,7 @@
             <li><strong>Purchases.</strong> If you subscribe, our server checks the signed Apple transaction and stores the product, expiry date and Apple's original transaction ID against your account. Purpose: unlock LLYLI Pro. We never see your payment details; Apple handles payment.</li>
             <li><strong>Usage events and errors.</strong> The app sends short events to our own database, linked to your account ID: for example word captured, review session completed, word mastered, paywall viewed, onboarding completed, and error codes. Properties are short labels or counts (for example a source, a count, a product ID or a word ID). The app drops any property longer than 40 characters, so word and sentence text is not included. Purpose: fix bugs and see which features are used. We do not use advertising or third-party analytics SDKs, and we do not track you across other companies' apps or websites.</li>
             <li><strong>Sentence reports.</strong> If you flag a sentence as wrong, we store the sentence text, your reason, the language, the app version and basic device information.</li>
+      <li><strong>Feedback.</strong> If you send feedback from Settings, we store your message, the category you picked (if any), the screen you sent it from, the app version, device model and iOS version, linked to your account ID. If you ask for a reply, we also store the email address you type. Each message is emailed to our support inbox. Purpose: read and answer your feedback.</li>
         </ol>
 
         <h2>What is sent to AI (OpenAI)</h2>
@@ -236,8 +237,18 @@
                     <td>The AI content listed above. <a href="https://openai.com/policies/privacy-policy">Privacy policy</a></td>
                 </tr>
                 <tr>
+                    <td><strong>Resend</strong></td>
+                    <td>Emails your feedback to our support inbox</td>
+                    <td>The feedback listed above. <a href="https://resend.com/legal/privacy-policy">Privacy policy</a></td>
+                </tr>
+                <tr>
+                    <td><strong>Google</strong></td>
+                    <td>Gmail, where a copy of each feedback email is kept so we can answer it</td>
+                    <td>The feedback listed above. <a href="https://policies.google.com/privacy">Privacy policy</a></td>
+                </tr>
+                <tr>
                     <td><strong>Apple</strong></td>
-                    <td>Sign in with Apple, speech recognition (where not on-device), App Store purchases, TestFlight</td>
+                    <td>Sign in with Apple, speech recognition (where not on-device), App Store purchases, TestFlight, iCloud Mail for our hello@llyli.eu inbox (feedback emails)</td>
                     <td><a href="https://www.apple.com/legal/privacy/">Privacy policy</a></td>
                 </tr>
             </tbody>
@@ -253,9 +264,10 @@
             <li>Confirm deletion</li>
         </ol>
         <div class="warning">
-            <strong>This is permanent and cannot be undone.</strong> It deletes your account and the data linked to it in our database (words, sentences, review history, progress, subscription record, usage events and sentence reports). Deleting the app removes the local copy on your device.
+            <strong>This is permanent and cannot be undone.</strong> It deletes your account and the data linked to it in our database (words, sentences, review history, progress, subscription record, usage events, sentence reports and feedback). Deleting the app removes the local copy on your device.
         </div>
-        <p>We cannot control how long OpenAI or Apple keep data they process; see their policies above.</p>
+        <p>Feedback emails already delivered to our inbox stay there until we delete them. Ask us at <a href="mailto:hello@llyli.eu">hello@llyli.eu</a> and we will delete them.</p>
+    <p>We cannot control how long OpenAI or Apple keep data they process; see their policies above.</p>
 
         <h2>Your rights (GDPR)</h2>
         <p>If you are in the European Economic Area, you can ask us to give you access to your data, correct it, delete it, export it, restrict or object to its use, and you can withdraw consent at any time. Deletion is available in the app. For anything else, contact us via <a href="https://wa.me/351931959625">WhatsApp</a>. You can also complain to your local data protection authority.</p>
