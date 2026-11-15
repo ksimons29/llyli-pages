@@ -1,0 +1,501 @@
+/*
+  LLYLI site. Every value below comes from the iOS design system in llyli-ios:
+  colours   Sources/LLYLIKit/Shared/DesignSystem/LLYLIPalette.swift (LLYLIColorToken)
+  spacing   DesignSystem/LLYLISpacing.swift (4/8/12/16/24/32/48, cardPadding 20, radii 4/8/12/100)
+  type      DesignSystem/LLYLITypography.swift + LLYLISerifFace.swift (Iowan Old Style, SF)
+  shadows   DesignSystem/LLYLIShadows.swift (cardShadow, buttonShadow; CSS blur = 2 x SwiftUI radius)
+  the page  Components/RuledRow.swift RuledPageMetrics (pitch 28, margin 40, inset 12,
+            trailing 16, maxWidth 600, baselineGap 4); rules and margin rule in `border`.
+  Sizes are in rem (1rem = 16pt at the default text size), so the ruling scales with the
+  reader's text size the way RuledPageMetrics.pitch scales with Dynamic Type.
+*/
+
+:root {
+  color-scheme: light dark;
+
+  /* LLYLIColorToken, light */
+  --background: #F8F3E7;
+  --card-white: #FDF9F3;
+  --coral: #D04535;
+  --coral-hover: #C03527;
+  --on-accent: #FFFFFF;
+  --teal: #0A666B;
+  --text-heading: #1D262A;
+  --text-primary: #2D3436;
+  --text-secondary: #5C6265;
+  --border: #E2E8F0;
+  --error-text: #B24642;
+  --error-background: #FFE5E5;
+  --state-hard: #8C5B52;
+  --state-hard-bg: #FAF0EE;
+  --state-good: #7D703F;
+  --state-good-bg: #FAF5F3;
+  --state-easy: #567474;
+  --state-easy-bg: #F0F5F5;
+
+  /* LLYLIShadows.swift, light */
+  --card-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);   /* black .05, radius 8, y 2 */
+  --button-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);  /* black .10, radius 4, y 2 */
+
+  /* LLYLISerifFace / LLYLITypography */
+  --serif: "Iowan Old Style", ui-serif, "Palatino Linotype", Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  /* RuledPageMetrics */
+  --pitch: 1.75rem;     /* 28: LLYLISpacing.xl + xs */
+  --margin: 2.5rem;     /* 40: LLYLISpacing.xxl + sm */
+  --inset: 0.75rem;     /* 12: LLYLISpacing.md */
+  --trailing: 1rem;     /* 16: LLYLISpacing.lg */
+  --page-max: 37.5rem;  /* 600: RuledPageMetrics.maxWidth, PlainPage */
+  --gap: 0.25rem;       /* 4: baselineGap, the rule sits 4 below the baseline */
+  --lead: calc(var(--margin) + var(--inset)); /* where writing starts */
+  /* Large title: SF bold at 34 on a 56 line sits 11 above its rule; 7 more puts it at 4. */
+  --title-drop: 0.4375rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #2A2420;
+    --card-white: #3A3430;
+    --coral: #F0705A;
+    --coral-hover: #E96A54;
+    --on-accent: #2A2420;
+    --teal: #5ECBC3;
+    --text-heading: #F2EDE4;
+    --text-primary: #D4CFC5;
+    --text-secondary: #BEB8AD;
+    --border: rgba(200, 195, 184, 0.10);
+    --error-text: #E8A090;
+    --error-background: rgba(232, 160, 144, 0.12);
+    --state-hard: #E8A090;
+    --state-hard-bg: rgba(232, 160, 144, 0.12);
+    --state-good: #D4B8A8;
+    --state-good-bg: rgba(212, 184, 168, 0.12);
+    --state-easy: #7EC4C4;
+    --state-easy-bg: rgba(126, 196, 196, 0.12);
+
+    --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);   /* black .35, radius 12, y 4 */
+    --button-shadow: 0 4px 16px rgba(0, 0, 0, 0.35); /* black .35, radius 8, y 4 */
+  }
+}
+
+/* Increase Contrast values from LLYLIColorSpec(increased:) */
+@media (prefers-contrast: more) {
+  :root {
+    --teal: #035054;
+    --text-secondary: #4C5154;
+    --border: #858A92;
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root {
+    --teal: #84F0E7;
+    --text-primary: #E6E1D8;
+    --text-secondary: #D6D0C5;
+    --border: rgba(200, 195, 184, 0.56);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background-color: var(--background);  /* paper (notebookPage) */
+}
+
+body {
+  margin: 0;
+  color: var(--text-primary);
+  font: 400 1.0625rem/var(--pitch) var(--sans);  /* body(): 17pt, one line per rule */
+  overflow-wrap: break-word;
+}
+
+/* The page: a centred column (maxWidth 600), ruled like RuledPage.ruling: a 1px rule in
+   `border` every pitch, baselineGap below each baseline, and the neutral margin rule at 40.
+   As on iPad, the ruling belongs to the column; outside it is plain paper. */
+.sheet {
+  position: relative;
+  max-width: var(--page-max);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 var(--trailing) 0 var(--lead);
+  background-image: linear-gradient(to bottom,
+    transparent calc(var(--pitch) - var(--gap)),
+    var(--border) calc(var(--pitch) - var(--gap)),
+    var(--border) calc(var(--pitch) - var(--gap) + 1px),
+    transparent calc(var(--pitch) - var(--gap) + 1px));
+  background-size: 100% var(--pitch);
+}
+.sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--margin);
+  width: 1px;                  /* LLYLISpacing.borderWidth */
+  background: var(--border);   /* never coral or red (RuledRow.swift) */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Wider than the page: give the page its edge, a 1px `border` each side and cardShadow. */
+@media (min-width: 40em) {
+  .sheet {
+    box-shadow: -1px 0 0 var(--border), 1px 0 0 var(--border), var(--card-shadow);
+  }
+}
+
+img { max-width: 100%; display: block; }
+
+/* Vertical rhythm: every block is a whole number of rules. */
+p, ul, ol, dl, table, figure, details { margin: 0 0 var(--pitch); }
+ul, ol { padding-left: 1.5rem; }  /* LLYLISpacing.xl */
+li { margin: 0; }
+li > ul, li > ol { margin-bottom: 0; }
+
+/* Page title: the system large title (34pt bold) the app shows on Today and Capture.
+   Each line takes two rules; paper covers the rules inside it (MarginLine rows: 2). */
+h1 {
+  position: relative;
+  margin: var(--pitch) calc(-1 * var(--trailing)) calc(-1 * var(--title-drop)) calc(-1 * var(--lead));
+  padding: var(--title-drop) var(--trailing) 0 var(--lead);
+  font: 700 2.125rem/calc(2 * var(--pitch)) var(--sans);
+  color: var(--text-heading);
+  background: linear-gradient(var(--background), var(--background)) top left /
+    100% calc(100% - var(--title-drop) - var(--gap) - 1px) no-repeat;
+}
+
+/* Section heading: LLYLITypography.heading2(), Iowan 20pt, drawn in Iowan Bold */
+h2 {
+  margin: calc(2 * var(--pitch)) 0 0;
+  font: 700 1.25rem/var(--pitch) var(--serif);
+  color: var(--text-heading);
+}
+
+/* Card heading: LLYLITypography.heading3(), Iowan 18pt, drawn in Iowan Bold */
+h3 {
+  margin: var(--pitch) 0 0;
+  font: 700 1.125rem/var(--pitch) var(--serif);
+  color: var(--text-heading);
+}
+h2 + h3 { margin-top: 0; }
+
+strong { font-weight: 600; color: var(--text-heading); }
+
+/* The underline lands on the rule (baselineGap below the baseline), 1px like the rule. */
+a { color: var(--teal); text-decoration-thickness: 1px; text-underline-offset: var(--gap); }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+  border-radius: 4px;          /* cornerRadiusSmall */
+}
+
+/* Page subtitle: LLYLITypography.pageSubtitle(), 14pt medium, textSecondary */
+.subtitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Quiet second line: bodySecondary(), 13pt medium */
+.secondary {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* The learned language: LLYLITypography.learnedText(), Iowan 18pt regular */
+.learned { font: 400 1.125rem/1 var(--serif); color: var(--text-heading); }
+
+.skip-link {
+  position: absolute;
+  left: var(--trailing);
+  top: -100px;
+  z-index: 2;
+  padding: 0.25rem 0.75rem;
+  background: var(--card-white);
+  color: var(--teal);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+}
+.skip-link:focus { top: 0.75rem; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* A 44pt tap target on a 28pt rule: 8 of padding each side, taken back by margin, so the
+   layout keeps one rule (RuledRow.swift tapAreaExpanded). */
+.tap {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: -0.5rem;
+  margin-bottom: -0.5rem;
+}
+
+/* Header: two rules tall. The app icon sits in the margin, like a margin mark. */
+.site-header {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  justify-content: space-between;
+  column-gap: 1rem;
+  min-height: calc(2 * var(--pitch));
+}
+.brand {
+  display: flex;
+  align-items: center;
+  color: var(--text-heading);
+  text-decoration: none;
+  font: 700 1.25rem/var(--pitch) var(--serif);
+}
+.brand img {
+  position: absolute;
+  left: calc(-1 * var(--lead) + (var(--margin) - 1.5rem) / 2);
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 4px;
+}
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* TertiaryButton text: buttonSecondary(), 14pt medium */
+.site-nav a {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: var(--pitch);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.site-nav a:hover { color: var(--teal); }
+.site-nav a[aria-current="page"] { color: var(--teal); font-weight: 600; }
+
+/* Marks written in the margin (MarginMark): a figure, centred in the 40pt margin. */
+.marked { list-style: none; padding: 0; }
+.marked > li { position: relative; }
+.mark {
+  position: absolute;
+  left: calc(-1 * var(--lead));
+  width: var(--margin);
+  text-align: center;
+  font-weight: 600;                    /* body().weight(.semibold) */
+  font-variant-numeric: tabular-nums;  /* .monospacedDigit() */
+  color: var(--text-heading);
+}
+
+/* Primary CTA: coral, onAccent text, button() 16pt semibold, padding 16, radius 8,
+   buttonShadow, full width with the label leading (PrimaryCTA.swift).
+   It sits in a RuledBox: two whole rules, centred. */
+.ruled-box {
+  display: flex;
+  align-items: center;
+  min-height: calc(2 * var(--pitch));
+  margin-bottom: var(--pitch);
+}
+.button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: calc(2 * var(--pitch) - var(--gap));
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--coral);
+  color: var(--on-accent);
+  font: 600 1rem/1.25rem var(--sans);
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: var(--button-shadow);
+}
+.button:hover { background: var(--coral-hover); color: var(--on-accent); }
+
+/* The four grades, as GradingButton draws them: radius 12, 1px border, state colours. */
+.grades {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  height: calc(2 * var(--pitch));
+  padding: 0;
+  list-style: none;
+}
+.grades li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font: 600 1rem/1.25rem var(--sans);
+}
+/* GradingButton shrinks its label (minimumScaleFactor 0.6); 13pt fits four across at 320. */
+@media (max-width: 25em) {
+  .grades li { padding: 0.5rem 0; font-size: 0.8125rem; }
+}
+.grades .again { color: var(--error-text); background: var(--error-background); }
+.grades .hard  { color: var(--state-hard); background: var(--state-hard-bg); }
+.grades .good  { color: var(--state-good); background: var(--state-good-bg); }
+.grades .easy  { color: var(--state-easy); background: var(--state-easy-bg); }
+
+/* Screenshots: one blank rule, then each image takes 12 rules and its caption two.
+   The fixed height keeps the ruling below in step. On a phone the row scrolls sideways
+   to the page edge, and the next screenshot shows at the edge. */
+.gallery {
+  height: calc(15 * var(--pitch));  /* the last rule leaves room for a scroll bar */
+  margin: var(--pitch) 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+}
+.gallery ul {
+  display: flex;
+  gap: 1rem;
+  height: calc(14 * var(--pitch));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gallery li { flex: none; scroll-snap-align: start; }
+.gallery figure { margin: 0; }
+.gallery img,
+.hero-shot img {
+  height: calc(12 * var(--pitch));
+  width: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;          /* cornerRadiusLarge */
+  box-shadow: var(--card-shadow);
+}
+.hero-shot img { max-width: none; }  /* shrink-to-fit box: a % cap would collapse it */
+.gallery figcaption strong { display: block; font-family: var(--serif); font-weight: 700; }
+
+@media (max-width: 35em) {
+  .gallery { height: calc(13 * var(--pitch)); margin-right: calc(-1 * var(--trailing)); }
+  .gallery ul { height: calc(12 * var(--pitch)); }
+  .gallery img { height: calc(10 * var(--pitch)); }
+}
+
+/* Wide screens: the Today screen stands beside the page, on plain paper. The page moves
+   left so page and screenshot are centred together (600 + 32 + screenshot). */
+.hero-shot { display: none; margin: 0; }
+@media (min-width: 56.25em) {
+  .sheet.has-aside { margin-left: calc((100% - var(--page-max) - 2rem - 9.75rem) / 2); }
+  .hero-shot {
+    display: block;
+    position: absolute;
+    top: calc(3 * var(--pitch));
+    left: calc(100% + 2rem);
+  }
+}
+
+/* NotebookSurface: cardWhite, radius 12, cardPadding 20, cardShadow. Vertical padding
+   12 + 16 keeps the card a whole number of rules. */
+.card {
+  margin: 0 0 var(--pitch);
+  padding: 0.75rem 1.25rem 1rem;
+  background: var(--card-white);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+}
+.card > :first-child { margin-top: 0; }
+.card > :last-child { margin-bottom: 0; }
+
+/* ErrorBanner: errorBackground over paper, radius 8, errorText for the warning. */
+.warning {
+  margin: 0 0 var(--pitch);
+  padding: 0.75rem 0.75rem 1rem;
+  background: linear-gradient(var(--error-background), var(--error-background)), var(--background);
+  border-radius: 8px;
+}
+.warning strong { color: var(--error-text); }
+
+/* RuledRow: quiet label leading, the fact trailing, on one rule. */
+.rows { padding: 0; list-style: none; }
+.rows li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  column-gap: 0.75rem;
+}
+.rows .label { color: var(--text-secondary); }
+
+/* Questions: the disclosure mark is written in the margin, teal like "+ Capture a word".
+   flow-root keeps the summary's tap padding inside its own rule. */
+.faq details { position: relative; display: flow-root; margin: 0; }
+.faq summary {
+  cursor: pointer;
+  list-style: none;
+  font: 700 1.125rem/var(--pitch) var(--serif);
+  color: var(--text-heading);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before {
+  content: "+";
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--lead));
+  width: var(--margin);
+  text-align: center;
+  font: 600 1.0625rem/var(--pitch) var(--sans);
+  color: var(--teal);
+}
+.faq details[open] summary::before { content: "\2212"; }
+.faq details[open] { margin-bottom: var(--pitch); }
+.faq details > p:last-child { margin-bottom: 0; }
+
+/* Tables lie on the ruling: no borders, one line per rule. */
+.table-wrap { overflow-x: auto; margin: 0 0 var(--pitch); }
+table { width: 100%; border-collapse: collapse; margin: 0; }
+th, td { padding: 0 0.75rem 0 0; text-align: left; vertical-align: top; }
+th { font: 700 1.125rem/var(--pitch) var(--serif); color: var(--text-heading); }
+
+/* On a phone each row becomes a short block of lines: name, role, data. */
+@media (max-width: 30em) {
+  table, tbody, tr, td { display: block; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tr + tr { margin-top: var(--pitch); }
+  td { padding: 0; }
+}
+
+/* Footer: quiet lines at the foot of the page. */
+.site-footer {
+  margin-top: calc(2 * var(--pitch));
+  padding-bottom: calc(2 * var(--pitch));
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.site-footer p { margin: 0; }
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-footer li { line-height: var(--pitch); }
+.site-footer a { display: inline-block; color: var(--text-primary); }
+.site-footer a:hover { color: var(--teal); }
+/* The tagline in the learned-language voice: learnedTextItalic(), Iowan italic 18pt */
+.site-footer .tagline { font: italic 400 1.125rem/var(--pitch) var(--serif); color: var(--text-heading); }
+
+@media print {
+  html { background: none; }
+  .sheet { box-shadow: none; }
+  .sheet::before, .skip-link, .site-nav, .ruled-box, .hero-shot { display: none; }
+}

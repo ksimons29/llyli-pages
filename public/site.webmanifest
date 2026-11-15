@@ -1,0 +1,13 @@
+{
+  "name": "LLYLI",
+  "short_name": "LLYLI",
+  "description": "Learn the language you live in",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#F8F3E7",
+  "theme_color": "#F8F3E7",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
