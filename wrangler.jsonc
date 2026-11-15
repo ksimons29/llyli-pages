@@ -2,6 +2,10 @@
   // llyli.eu: static site on Cloudflare Workers Static Assets (no Worker script).
   "name": "llyli-site",
   "compatibility_date": "2026-11-01",
+  "routes": [
+    { "pattern": "llyli.eu", "custom_domain": true },
+    { "pattern": "www.llyli.eu", "custom_domain": true }
+  ],
   "assets": {
     "directory": "./public",
     "not_found_handling": "404-page",
